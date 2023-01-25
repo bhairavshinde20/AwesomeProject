@@ -1,147 +1,160 @@
-import {Image, View, StyleSheet, Text, FlatList, TextInput} from 'react-native';
+import {
+  Image,
+  View,
+  StyleSheet,
+  Text,
+  FlatList,
+  TextInput,
+  SafeAreaView,
+  Pressable,
+  Button,
+} from 'react-native';
 import React from 'react';
 import {ScrollView} from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-// import Icons from "react-native-ionicons"
+import Share from "react-native-share"
 
 export default function Serach({navigation}) {
+
+  Share.open(options)
+  .then((res) => {
+    console.log(res);
+  })
+  .catch((err) => {
+    err && console.log(err);
+  });
+
+  const data = [
+    {
+      id: 1,
+      name: 'Nk Downshifter',
+      title: 'Best Selling',
+      price: 100,
+      image: require('../../assets/shoose1.jpg'),
+      // image2:require()
+    },
+    {
+      id: 2,
+      name: 'Nk Downshifter',
+      title: 'Tranding',
+      price: 240,
+      image: require('../../assets/shoose2.jpg'),
+    },
+    {
+      id: 3,
+      name: 'Nk Downshifter',
+      title: 'Best Selling',
+      price: 120,
+      image: require('../../assets/shoose3.jpg'),
+    },
+    {
+      id: 4,
+      name: 'Nk Downshifter',
+      title: 'tranding',
+      price: 140,
+      image: require('../../assets/shoose4.jpg'),
+    },
+    {
+      id: 5,
+      name: 'Nk Downshifter',
+      title: 'Best Selling',
+      price: 120,
+      image: require('../../assets/shoose5.jpg'),
+    },
+    {
+      id: 6,
+      name: 'Nk Downshifter',
+      title: 'Tranding',
+      price: 120,
+      image: require('../../assets/nike1.jpg'),
+    },
+    {
+      id: 7,
+      name: 'Nk Downshifter',
+      title: 'Best Selling',
+      price: 120,
+      image: require('../../assets/nike2.jpg'),
+    },
+    {
+      id: 8,
+      name: 'Nk Downshifter',
+      title: 'Tranding',
+      price: 120,
+      image: require('../../assets/nike3.jpg'),
+    },
+
+    {
+      id: 9,
+      name: 'Nk Downshifter',
+      title: 'Best Selling',
+      price: 120,
+      image: require('../../assets/shooseIcon.jpg'),
+    },
+    {
+      id: 10,
+      name: 'Nk Downshifter',
+      title: 'Best Selling',
+      price: 120,
+      image: require('../../assets/nike1.png'),
+    },
+    {
+      id: 11,
+      name: 'Nk Downshifter',
+      title: 'Best Selling',
+      price: 120,
+      image: require('../../assets/nike2.png'),
+    },
+    {
+      id: 12,
+      name: 'Nk Downshifter',
+      title: 'Best Selling',
+      price: 120,
+      image: require('../../assets/nike3.png'),
+    },
+  ];
+
+  const NewDumyDataItems = ({name, price, image}) => (
+    <ScrollView>
+      <View style={styles.serContainer}>
+        <View style={styles.ImageBox}>
+          <Icon name="favorite-outline" style={styles.IconStyles} />
+          <Image style={styles.Image} source={image} />
+          <Text style={styles.Name}>{name}</Text>
+          <View style={styles.PriceBox}>
+            <Text style={styles.price}>
+              <Text style={styles.Doller}>$</Text> {price}
+            </Text>
+            <Icon onPress={()=>Share()} name="share" style={styles.ShareIcon} />
+          </View>
+        </View>
+      </View>
+    </ScrollView>
+  );
+
   return (
     <ScrollView>
-      <Text style={{color: 'black', fontSize: 50, marginLeft: 30}}>Our Product</Text>
-
+      <Text style={{color: 'black', fontSize: 50, marginLeft: 30}}>
+        Our Product
+      </Text>
       <TextInput
         placeholder="Search Your Product..."
         placeholderTextColor="black"
         style={styles.InputBox}></TextInput>
 
-      <View style={styles.serContainer}>
-        <View style={styles.ImageBox}>
-          <Icon name="favorite" style={styles.IconStyles} />
-          <Image
-            style={styles.Image}
-            source={require('../../assets/nike1.png')}
-          />
-          <Text style={styles.Name}>NK DOWNSHIFTER</Text>
-          <View style={styles.PriceBox}>
-            <Text style={styles.price}>
-              <Text style={styles.Doller}>$</Text> 100
-            </Text>
-            <Icon name="share" style={styles.ShareIcon} />
-          </View>
-        </View>
-        <View style={styles.ImageBox}>
-          <Icon name="favorite" style={styles.IconStyles} />
-          <Image
-            style={styles.Image}
-            source={require('../../assets/nike2.png')}
-          />
-          <Text style={styles.Name}>NK DOWNSHIFTER</Text>
+      <FlatList
+        // horizontal
 
-          <View style={styles.PriceBox}>
-            <Text style={styles.price}>
-              {' '}
-              <Text style={styles.Doller}>$</Text> 100
-            </Text>
-            <Icon name="share" style={styles.ShareIcon} />
-          </View>
-        </View>
-      </View>
-
-      <View style={styles.serContainer}>
-        <View style={styles.ImageBox}>
-          <Icon name="favorite" style={styles.IconStyles} />
-          <Image
-            style={styles.Image}
-            source={require('../../assets/nike3.png')}
+        data={data}
+        renderItem={({item}) => (
+          <NewDumyDataItems
+            image={item.image}
+            name={item.name}
+            price={item.price}
           />
-          <Text style={styles.Name}>NK DOWNSHIFTER</Text>
-          <View style={styles.PriceBox}>
-            <Text style={styles.price}>
-              <Text style={styles.Doller}>$</Text> 100
-            </Text>
-            <Icon name="share" style={styles.ShareIcon} />
-          </View>
-        </View>
-        <View style={styles.ImageBox}>
-          <Icon name="favorite" style={styles.IconStyles} />
-          <Image
-            style={styles.Image}
-            source={require('../../assets/nike5.png')}
-          />
-          <Text style={styles.Name}>NK DOWNSHIFTER</Text>
-
-          <View style={styles.PriceBox}>
-            <Text style={styles.price}>
-              <Text style={styles.Doller}>$</Text> 100
-            </Text>
-            <Icon name="share" style={styles.ShareIcon} />
-          </View>
-        </View>
-      </View>
-
-      <View style={styles.serContainer}>
-        <View style={styles.ImageBox}>
-          <Icon name="favorite" style={styles.IconStyles} />
-          <Image
-            style={styles.Image}
-            source={require('../../assets/nike104.png')}
-          />
-          <Text style={styles.Name}>NK DOWNSHIFTER</Text>
-          <View style={styles.PriceBox}>
-            <Text style={styles.price}>
-              <Text style={styles.Doller}>$</Text> 100
-            </Text>
-            <Icon name="share" style={styles.ShareIcon} />
-          </View>
-        </View>
-        <View style={styles.ImageBox}>
-          <Icon name="favorite" style={styles.IconStyles} />
-          <Image
-            style={styles.Image}
-            source={require('../../assets/nike105.png')}
-          />
-          <Text style={styles.Name}>NK DOWNSHIFTER</Text>
-
-          <View style={styles.PriceBox}>
-            <Text style={styles.price}>
-              <Text style={styles.Doller}>$</Text> 100
-            </Text>
-            <Icon name="share" style={styles.ShareIcon} />
-          </View>
-        </View>
-      </View>
-
-      <View style={styles.serContainer}>
-        <View style={styles.ImageBox}>
-          <Icon name="favorite" style={styles.IconStyles} />
-          <Image
-            style={styles.Image}
-            source={require('../../assets/nike106.png')}
-          />
-          <Text style={styles.Name}>NK DOWNSHIFTER</Text>
-          <View style={styles.PriceBox}>
-            <Text style={styles.price}>
-              <Text style={styles.Doller}>$</Text> 100
-            </Text>
-            <Icon name="share" style={styles.ShareIcon} />
-          </View>
-        </View>
-        <View style={styles.ImageBox}>
-          <Icon name="favorite" style={styles.IconStyles} />
-          <Image
-            style={styles.Image}
-            source={require('../../assets/nike1.png')}
-          />
-          <Text style={styles.Name}>NK DOWNSHIFTER</Text>
-
-          <View style={styles.PriceBox}>
-            <Text style={styles.price}>
-              <Text style={styles.Doller}>$</Text> 100
-            </Text>
-            <Icon name="share" style={styles.ShareIcon} />
-          </View>
-        </View>
-      </View>
+        )}
+        numColumns={2}
+        keyExtractor={item => item.id}
+      />
     </ScrollView>
   );
 }
@@ -150,10 +163,11 @@ const styles = StyleSheet.create({
     // flex: 1,
     // backgroundColor: '#003f5c',
     width: '90%',
-    flexDirection: 'row',
+    flexDirection: 'column',
     alignItems: 'center',
-    justifyContent: 'space-between',
-    marginLeft:20
+    justifyContent: 'space-around',
+    marginLeft: 12,
+    marginBottom: 20,
   },
   InputBox: {
     marginTop: 50,
@@ -169,17 +183,19 @@ const styles = StyleSheet.create({
     height: 70,
     marginBottom: 20,
     alignItems: 'center',
+    backgroundColor: 'white',
   },
 
   ImageBox: {
     width: 210,
     height: 300,
-    borderWidth: 1,
+    // borderWidth: 1,
     borderColor: '#808080',
     alignItems: 'flex-start',
     borderRadius: 20,
     marginTop: 40,
     padding: 10,
+    backgroundColor: 'white',
   },
   Name: {
     fontSize: 20,
@@ -187,8 +203,8 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
   },
   IconStyles: {
-    color: 'black',
-    opacity: 0.3,
+    color: 'orange',
+    // opacity: 0.3,
     fontSize: 40,
   },
   Doller: {
@@ -221,4 +237,22 @@ const styles = StyleSheet.create({
     opacity: 0.9,
     fontSize: 30,
   },
+
+  //   box: {
+  //   flex: 1,
+  //   alignItems: 'center',
+  //   justifyContent: 'center',
+  //   width: '70%',
+  //   height: 400,
+  //   borderColor: '#FFBF00',
+  //   borderRadius: 25,
+  // },
+  // NewAra: {
+  //   fontSize: 20,
+  //   fontFamily: 'Gill Sans',
+  // },
+  // Summ: {
+  //   fontSize: 30,
+  //   font,
+  // },
 });

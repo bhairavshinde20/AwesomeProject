@@ -1,37 +1,57 @@
-import "react-native-gesture-handler"
+import 'react-native-gesture-handler';
 import * as React from 'react';
+import {useRef} from 'react';
+import 'react-native-gesture-handler';
+import {
+  Animated,
+  Dimensions,
+  Image,
+  Platform,
+  Text,
+  TouchableOpacity,
+} from 'react-native';
+
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {createDrawerNavigator} from '@react-navigation/drawer';
-import Icon from 'react-native-vector-icons/MaterialIcons';
-import {StyleSheet} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 
 import HomeScreen from './screen/Home';
 import SerachScreen from './screen/Serach';
 import FavScreen from './screen/Fav';
 import CartScreen from './screen/Cart';
 import AccountScreen from './screen/Account';
-import Signup from "./screen/Signup";
+import SingleProduct from './screen/SingleProduct';
+import Signup from './screen/Signup';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-
+import Icon from 'react-native-vector-icons/MaterialIcons';
+// import Icon from 'react-native-vector-icons/FontAwesome';
+// import Icons from 'react-native-vector-icons/SimpleLineIcons';
+import CustomDrawer from './screen/CustomDrawer';
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
 const Tab = createBottomTabNavigator();
 
 const BottomTabStack = () => {
+  const tabOffsetValue = useRef(new Animated.Value(0)).current;
+
   return (
     <Tab.Navigator
       initialRouteName="HomeScreen"
-      screenOptions={{headerShown: false}}
-    //   style={styles.Bottom}
-
-      >
+      screenOptions={{
+        headerShown: false,
+        tabBarActiveTintColor: '#6D00B6',
+        // tabBarBackground:"black"
+      }}>
       <Tab.Screen
         name="HomeScreen"
         component={HomeScreen}
         options={{
           tabBarLabel: 'Home ',
-          tabBarIcon: () => <Icon name="home" color="#FFB100" size={40} />,
+          tabBarLabelStyle: {fontSize: 17},
+          tabBarIcon: ({focused}) => (
+            <Icon name="home" color={focused ? '#6D00B6' : 'black'} size={35} />
+          ),
         }}
       />
       <Tab.Screen
@@ -39,7 +59,14 @@ const BottomTabStack = () => {
         component={SerachScreen}
         options={{
           tabBarLabel: 'Search',
-          tabBarIcon: () => <Icon name="search" color="#FFB100" size={40} />,
+          tabBarLabelStyle: {fontSize: 17},
+          tabBarIcon: ({focused}) => (
+            <Icon
+              name="search"
+              color={focused ? '#6D00B6' : 'black'}
+              size={30}
+            />
+          ),
         }}
       />
       <Tab.Screen
@@ -47,7 +74,14 @@ const BottomTabStack = () => {
         component={FavScreen}
         options={{
           tabBarLabel: 'Favorite',
-          tabBarIcon: () => <Icon name="favorite" color="#FFB100" size={40} />,
+          tabBarLabelStyle: {fontSize: 17},
+          tabBarIcon: ({focused}) => (
+            <Icon
+              name="favorite-border"
+              color={focused ? '#6D00B6' : 'black'}
+              size={30}
+            />
+          ),
         }}
       />
       <Tab.Screen
@@ -55,7 +89,14 @@ const BottomTabStack = () => {
         component={CartScreen}
         options={{
           tabBarLabel: 'Cart',
-          tabBarIcon: () => <Icon name="shop" color="#FFB100" size={40} />,
+          tabBarLabelStyle: {fontSize: 17},
+          tabBarIcon: ({focused}) => (
+            <Icon
+              name="add-shopping-cart"
+              color={focused ? '#6D00B6' : 'black'}
+              size={30}
+            />
+          ),
         }}
       />
       <Tab.Screen
@@ -63,7 +104,14 @@ const BottomTabStack = () => {
         component={AccountScreen}
         options={{
           tabBarLabel: 'Account',
-          tabBarIcon: () => <Icon name="person" color="#FFB100" size={40} />,
+          tabBarLabelStyle: {fontSize: 17},
+          tabBarIcon: ({focused}) => (
+            <Icon
+              name="person-outline"
+              color={focused ? '#6D00B6' : 'black'}
+              size={30}
+            />
+          ),
         }}
       />
     </Tab.Navigator>
@@ -76,6 +124,7 @@ const HomeScreenStack = () => {
       initialRouteName="HomeScreen"
       screenOptions={{headerShown: false}}>
       <Stack.Screen name="BottomTabStack" component={BottomTabStack} />
+      <Stack.Screen name="SingleProduct" component={SingleProduct} />
     </Stack.Navigator>
   );
 };
@@ -105,6 +154,7 @@ const CartScreenStack = () => {
       initialRouteName="cart"
       screenOptions={{headerShown: false}}>
       <Stack.Screen name="Cart" component={CartScreen} />
+      {/* <Stack.Screen name="CheckOut" component={CheckOut} /> */}
     </Stack.Navigator>
   );
 };
@@ -114,43 +164,41 @@ const AccountScreenStack = () => {
       initialRouteName="Account"
       screenOptions={{headerShown: false}}>
       <Stack.Screen name="Account" component={AccountScreen} />
+      {/* <Stack.Screen name="Signup" component={Signup} /> */}
     </Stack.Navigator>
   );
 };
-
-// const SignScreenStack = () => {
-//     return (s
-//       <Stack.Navigator
-//         // initialRouteName="Account"
-//         screenOptions={{headerShown: true}}>
-//         <Stack.Screen name="signup" component={Signup} />
-//       </Stack.Navigator>
-//     );
-//   };
-  
-
 
 const Maincontainer = () => {
   return (
     <NavigationContainer>
       <Drawer.Navigator
+        drawerContent={props => <CustomDrawer {...props} />}
         screenOptions={{
           headerStyle: {
-            backgroundColor: '#f4511e', //Set Header color
+            backgroundColor: 'white', //Set Header color
           },
-          headerTintColor: '#fff', //Set Header text color
+          headerTintColor: 'black', //Set Header text color
+
+          drawerLabelStyle: {
+            // marginLeft: 25,
+            fontFamily: 'Roboto-Medium',
+            fontSize: 25,
+          },
         }}>
         <Drawer.Screen
           name="HomeScreenStack"
           options={{
             drawerLabel: 'Home',
             title: 'Home',
-            // drawerIcon: ({focused,size}) =>{
-            //     <Icon
-            //     name='home'
-            //     size={size}
-            //     color={focused ? 'red' : 'black '}/>
-            // }
+            drawerIcon: ({color}) => (
+              <Icon
+                name="home"
+                style={styles.iconstyle}
+                size={30}
+                color="#a53fe9"
+              />
+            ),
           }}
           component={HomeScreenStack}
         />
@@ -159,6 +207,14 @@ const Maincontainer = () => {
           options={{
             drawerLabel: 'Search',
             title: 'Search',
+            drawerIcon: ({color}) => (
+              <Icon
+                name="search"
+                style={styles.iconstyle}
+                size={30}
+                color="#a53fe9"
+              />
+            ),
           }}
           component={SearchScreenStack}
         />
@@ -167,6 +223,14 @@ const Maincontainer = () => {
           options={{
             drawerLabel: 'Favroit',
             title: 'Favroit',
+            drawerIcon: ({color}) => (
+              <Icon
+                name="favorite"
+                style={styles.iconstyle}
+                size={30}
+                color="#a53fe9"
+              />
+            ),
           }}
           component={FavScreenStack}
         />
@@ -175,6 +239,14 @@ const Maincontainer = () => {
           options={{
             drawerLabel: 'Cart',
             title: 'Cart',
+            drawerIcon: ({color}) => (
+              <Icon
+                name="shop"
+                style={styles.iconstyle}
+                size={30}
+                color="#a53fe9"
+              />
+            ),
           }}
           component={CartScreenStack}
         />
@@ -183,6 +255,14 @@ const Maincontainer = () => {
           options={{
             drawerLabel: 'Account',
             title: 'Account',
+            drawerIcon: ({color}) => (
+              <Icon
+                name="person"
+                style={styles.iconstyle}
+                size={30}
+                color="#a53fe9"
+              />
+            ),
           }}
           component={AccountScreenStack}
         />
@@ -190,7 +270,6 @@ const Maincontainer = () => {
     </NavigationContainer>
   );
 };
-
 const styles = StyleSheet.create({
   Bottom: {
     size: 50,
@@ -199,79 +278,3 @@ const styles = StyleSheet.create({
   },
 });
 export default Maincontainer;
-// export {BottomTabStack}
-
-// import  React from "react"
-// import { NavigationContainer  } from "@react-navigation/native"
-// import { createBottomTabNavigator } from "@react-navigation/bottom-tabs"
-// import Icon from "react-native-vector-icons/MaterialIcons"
-
-// // screens tab
-
-// import HomeScreen from "./screen/Home"
-//  import SerachScreen from "./screen/Serach"
-//  import FavScreen from "./screen/Fav"
-//  import CartScreen from "./screen/Cart"
-//  import AccountScreen from "./screen/Account"
-// // import { Colors } from "react-native/Libraries/NewAppScreen"
-
-// const Tab = createBottomTabNavigator();
-
-// function Maincontainer (){
-
-//     return(
-//         <NavigationContainer >
-//         {/* <StatusBar style={{backgroundColor:'#FFB100'}} /> */}
-
-//             <Tab.Navigator
-
-//             initialRouteName='Home'>
-//                 <Tab.Screen
-
-//                 name ='Home'
-//                  component={HomeScreen}
-
-//                  options={{
-
-// tabBarIcon: () => (
-//     <Icon name='home' color='#FFB100' size={40} />
-// )
-//                 }}
-//                 style={{paddingBottom:50,
-//                     backgroundColor: 'red'}}
-//                  />
-//                 <Tab.Screen name ='Search' component={SerachScreen}
-//                  options={{
-//                     tabBarIcon: () => (
-//                         <Icon name='search' color='#FFB100' size={40} />
-//                     ),
-//                 }}
-//                 />
-//                 <Tab.Screen name ='Favroit' component={FavScreen}
-//                  options={{
-//                     tabBarIcon: () => (
-//                         <Icon name='favorite' color='#FFB100' size={40} />
-//                     ),
-//                 }}
-//                 />
-//                 <Tab.Screen name ='Cart' component={CartScreen}
-//                  options={{
-//                     tabBarIcon: () => (
-//                         <Icon name='shop' color='#FFB100' size={40} />
-//                     ),
-//                 }}
-//                 />
-//                 <Tab.Screen name ='Account' component={AccountScreen}
-//                  options={{
-//                     tabBarIcon: () => (
-//                         <Icon name='person' color='#FFB100' size={40} />
-//                     ),
-//                 }}
-//                 />
-
-//             </Tab.Navigator>
-//         </NavigationContainer >
-//     )
-// }
-
-// export default Maincontainer

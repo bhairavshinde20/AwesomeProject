@@ -1,48 +1,79 @@
-import {View, Text,StyleSheet, Image, TextInput, TouchableOpacity} from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  TextInput,
+  TouchableOpacity,
+} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+// import { FontAwesome5 } from 'react-native-vector-icons';
 import React, {useState} from 'react';
 
 export default function Account({navigation}) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [error,setError] = useState()
+
+
+const HandleSubmit = () =>{
+  if(email =="" || password ==""){
+    setError(true)
+
+  }
+}
+
+
   // const [checkvalieemail, setCheckValidEmail] = useState(false);
   // const handlecheck = text => {
-  //   let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+  //   const reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
   //   setEmail(text);
   //   if (reg.text(text)) {
   //     setCheckValidEmail(false);
   //   } else {
-  //     checkvalieemail(true);
+  //     checkvalieemail("Email and password are mandatory");
   //   }
+
   // };
 
-
   return (
+    
     <View style={styles.container}>
       <View style={styles.container_2}>
         <Image style={styles.image} source={require('../../assets/logo.png')} />
+
         <View style={styles.inputView}>
           {/* <Ionicons name={user}/> */}
-          <Icon
+           <Icon
             name="person"
             style={styles.iconstyle}
             size={30}
             color="white"
-          />
+          /> 
+           {/* <FontAwesome5
+                name="user-alt"
+                size={30}
+                // color={focused ? 'red' : 'gray'}
+              ></FontAwesome5> */}
           <TextInput
+          isRequired 
             style={styles.TextInput}
             placeholder="User Email"
             placeholderTextColor="white"
             // onChangeText={text => handlecheck(text)}
-            onChange={email=>setEmail(email)}
+            onChange={email => setEmail(email)}
             value={email}
           />
         </View>
         {/* {checkvalieemail ? (
-          <Text>Wrong Email address</Text>
+          <Text style={{color:"red"}}>Wrong Email address</Text>
         ) : (
-          <Text>enter email</Text>
+          <Text></Text>
         )} */}
+{
+  error ? <Text style={{color:"red"}}>Email and password are mandatory</Text> : <Text></Text>
+}
+
         <View style={styles.inputView}>
           <Icon name="lock" style={styles.iconstyle} size={30} color="white" />
 
@@ -51,20 +82,23 @@ export default function Account({navigation}) {
             placeholder="Password"
             placeholderTextColor="white"
             secureTextEntry={true}
-            // underlineColorAndroid='black'
+            // onChangeText={text => handlecheck(text)}
             onChangeText={password => setPassword(password)}
             value={password}
           />
-        {/* <Image  source={require('../../assets/eye.png')}/> */}
-        <Icon name="visibility" style={{marginRight:20}} size={20} color="white" />
-
+          {/* <Icon
+            name="visibility"
+            style={{marginRight: 20}}
+            size={20}
+            color="white"
+          /> */}
         </View>
         <TouchableOpacity>
           <Text style={styles.forgot_button}>Forgot Password?</Text>
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.loginBtn}>
-          <Text style={styles.loginText}>LOGIN</Text>
+          <Text style={styles.loginText}  >LOGIN</Text>
         </TouchableOpacity>
         {/* <Text style={{ paddingTop: 10, fontWeight: "bold", color: "white" }}>
           If you don't Have an accout ?
@@ -76,7 +110,7 @@ export default function Account({navigation}) {
             color: 'white',
             fontSize: 20,
           }}
-          onPress={() => navigation.navigate('Cart')}>
+          onPress={() => navigation.navigate('Signup')}>
           Signup
         </Text>
 
