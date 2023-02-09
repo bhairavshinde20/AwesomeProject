@@ -1,0 +1,122 @@
+import { StyleSheet } from 'react-native';
+export default StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: 'white',
+    },
+    Cat: {
+      color: 'black',
+      fontSize: 45,
+      paddingLeft: 25,
+      marginTop: 5,
+    },
+    ShoesView: {
+      padding: 10,
+      flexDirection: 'row',
+      marginLeft: 20,
+      marginTop: 10,
+      borderColor: 'grey',
+      // opacity:0.5,
+      borderWidth: 1,
+      borderRadius: 50,
+      width: 200,
+      height: 80,
+      justifyContent: 'space-evenly',
+    },
+    BannerImg: {
+      width: '50%',
+      height: 70,
+      flexDirection: 'column',
+      alignSelf: 'flex-start',
+      position: 'relative',
+      overflow: 'hidden',
+      resizeMode: 'contain',
+      marginLeft: 10,
+    },
+    Shoose: {
+      color: 'black',
+      alignSelf: 'center',
+      fontSize: 20,
+      margin: 10,
+    },
+  
+    serContainer: {
+      marginLeft: 20,
+      flex: 1,
+      flexDirection: 'column',
+      alignContent: 'space-around',
+      justifyContent: 'space-around',
+      alignSelf: 'center',
+      paddingBottom: 20,
+    },
+    NewImgBox: {
+      marginLeft: 20,
+      flex: 1,
+      flexDirection: 'column-reverse',
+      alignContent: 'space-around',
+      justifyContent: 'space-around',
+      alignSelf: 'center',
+      paddingBottom: 20,
+    },
+    ImageBox: {
+      width: 210,
+      height: 340,
+      backgroundColor: 'white',
+  
+      alignItems: 'flex-start',
+      borderRadius: 20,
+      marginTop: 20,
+      padding: 10,
+      elevation: 10,
+    },
+    shadowProp: {
+      shadowOffset: { width: -2, height: 4 },
+      shadowColor: '#171717',
+      shadowOpacity: 0.1,
+      shadowRadius: 3,
+    },
+    Name: {
+      fontSize: 20,
+      color: 'black',
+      alignSelf: 'center',
+    },
+    IconStyles: {
+      color: 'orange',
+      fontSize: 40,
+    },
+    Doller: {
+      color: '#808080',
+      fontSize: 22,
+    },
+    Image: {
+      width: '100%',
+      height: 150,
+      alignSelf: 'center',
+      position: 'relative',
+      overflow: 'hidden',
+      resizeMode: 'contain',
+      backgroundColor: 'transparant',
+    },
+    Tanding: {
+      color: 'orange',
+      alignSelf: 'center',
+      fontSize: 25,
+      marginTop: 7,
+    },
+    PriceBox: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+      width: '100%',
+    },
+    price: {
+      fontSize: 35,
+      color: 'black',
+      fontWeight: 'bold',
+    },
+    previewImageContainer: {
+      borderWidth: 1,
+      overflow: 'hidden',
+    },
+  });
+  

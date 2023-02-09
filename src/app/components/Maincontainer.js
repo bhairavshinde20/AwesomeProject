@@ -1,21 +1,6 @@
 import 'react-native-gesture-handler';
 import * as React from 'react';
-import {useRef} from 'react';
-import 'react-native-gesture-handler';
-import {
-  Animated,
-  Dimensions,
-  Image,
-  Platform,
-  Text,
-  TouchableOpacity,
-} from 'react-native';
-
-import {NavigationContainer} from '@react-navigation/native';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import {createDrawerNavigator} from '@react-navigation/drawer';
-import {StyleSheet, View} from 'react-native';
-
+import styles from './styles/MainContainerStyle'
 import HomeScreen from './screen/Home';
 import SerachScreen from './screen/Serach';
 import FavScreen from './screen/Fav';
@@ -23,25 +8,36 @@ import CartScreen from './screen/Cart';
 import AccountScreen from './screen/Account';
 import SingleProduct from './screen/SingleProduct';
 import Signup from './screen/Signup';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-// import Icon from 'react-native-vector-icons/FontAwesome';
-// import Icons from 'react-native-vector-icons/SimpleLineIcons';
 import CustomDrawer from './screen/CustomDrawer';
+
+import {Animated,StyleSheet,View} from 'react-native';
+import {useRef} from 'react';
+import {NavigationContainer} from '@react-navigation/native';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import {createDrawerNavigator} from '@react-navigation/drawer';
+import MainComponent from './screen/MainComponent';
+
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
 const Tab = createBottomTabNavigator();
 
 const BottomTabStack = () => {
   const tabOffsetValue = useRef(new Animated.Value(0)).current;
-
   return (
     <Tab.Navigator
       initialRouteName="HomeScreen"
       screenOptions={{
-        headerShown: false,
+        headerShown: false,      
+        tabBarStyle:{height:73,
+        width:'90%',
+        alignSelf:'center',
+        borderRadius:20,marginBottom:10,
+        padding:10,
+        paddingBottom:10
+        },
         tabBarActiveTintColor: '#6D00B6',
-        // tabBarBackground:"black"
       }}>
       <Tab.Screen
         name="HomeScreen"
@@ -125,6 +121,10 @@ const HomeScreenStack = () => {
       screenOptions={{headerShown: false}}>
       <Stack.Screen name="BottomTabStack" component={BottomTabStack} />
       <Stack.Screen name="SingleProduct" component={SingleProduct} />
+      <Stack.Screen name="Signup" component={Signup} />
+      {/* <Stack.Screen name="MainComponent" component={MainComponent} /> */}
+
+
     </Stack.Navigator>
   );
 };
@@ -138,6 +138,7 @@ const SearchScreenStack = () => {
     </Stack.Navigator>
   );
 };
+
 const FavScreenStack = () => {
   return (
     <Stack.Navigator
@@ -158,13 +159,13 @@ const CartScreenStack = () => {
     </Stack.Navigator>
   );
 };
+
 const AccountScreenStack = () => {
   return (
     <Stack.Navigator
       initialRouteName="Account"
       screenOptions={{headerShown: false}}>
       <Stack.Screen name="Account" component={AccountScreen} />
-      {/* <Stack.Screen name="Signup" component={Signup} /> */}
     </Stack.Navigator>
   );
 };
@@ -270,11 +271,4 @@ const Maincontainer = () => {
     </NavigationContainer>
   );
 };
-const styles = StyleSheet.create({
-  Bottom: {
-    size: 50,
-    color: 'red',
-    height: 100,
-  },
-});
 export default Maincontainer;

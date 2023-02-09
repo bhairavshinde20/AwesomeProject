@@ -8,21 +8,51 @@ import {
   SafeAreaView,
   Pressable,
   Button,
+  ActivityIndicator,
+  TouchableOpacity
 } from 'react-native';
-import React from 'react';
-import {ScrollView} from 'react-native-gesture-handler';
+import styles from '../styles/SearchStyle'
+import { ScrollView } from 'react-native-gesture-handler';
+import { useDispatch } from 'react-redux';
+import { ViewSingleProduct } from '../redux/reducer/Product';
+import React, { useState, useEffect, useRef } from 'react';
+import { addToFav } from '../redux/reducer/Favroit';
+import Skeleton from '@thevsstech/react-native-skeleton';
+import axios from 'axios';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import Share from "react-native-share"
 
-export default function Serach({navigation}) {
+export default function Serach({ navigation }) {
 
-  Share.open(options)
-  .then((res) => {
-    console.log(res);
-  })
-  .catch((err) => {
-    err && console.log(err);
-  });
+  const [apidata, setApiData] = useState([])
+  const [isLoading, setLoading] = useState(true);
+
+  //  main product api getting 
+  useEffect(() => {
+    axios.get("https://parind.online/parind4/public/api/products?new&limit=4")
+      .then(async (res) => {
+        const backendData = await res.data.data;
+        setApiData(backendData);
+
+      }).catch((err) => console.log(err))
+      .finally(() => setLoading(false));
+  }, []);
+  // console.log(apidata);
+  let newapidata = [];
+  newapidata.push(apidata);
+  // console.log(newapidata[0])
+  const mainapidata = newapidata[0];
+
+
+  const dispatch = useDispatch()
+  const FetchSingleProducts = (item) => {
+    dispatch(ViewSingleProduct(item))
+  }
+
+
+  const AddtoFavroit = item => {
+    dispatch(addToFav(item))
+  }
 
   const data = [
     {
@@ -66,21 +96,21 @@ export default function Serach({navigation}) {
       name: 'Nk Downshifter',
       title: 'Tranding',
       price: 120,
-      image: require('../../assets/nike1.jpg'),
+      // image: require('../../assets/nike1.jpg'),
     },
     {
       id: 7,
       name: 'Nk Downshifter',
       title: 'Best Selling',
       price: 120,
-      image: require('../../assets/nike2.jpg'),
+      // image: require('../../assets/nike2.jpg'),
     },
     {
       id: 8,
       name: 'Nk Downshifter',
       title: 'Tranding',
       price: 120,
-      image: require('../../assets/nike3.jpg'),
+      // image: require('../../assets/nike3.jpg'),
     },
 
     {
@@ -95,25 +125,25 @@ export default function Serach({navigation}) {
       name: 'Nk Downshifter',
       title: 'Best Selling',
       price: 120,
-      image: require('../../assets/nike1.png'),
+      // image: require('../../assets/nike1.png'),
     },
     {
       id: 11,
       name: 'Nk Downshifter',
       title: 'Best Selling',
       price: 120,
-      image: require('../../assets/nike2.png'),
+      // image: require('../../assets/nike2.png'),
     },
     {
       id: 12,
       name: 'Nk Downshifter',
       title: 'Best Selling',
       price: 120,
-      image: require('../../assets/nike3.png'),
+      // image: require('../../assets/nike3.png'),
     },
   ];
 
-  const NewDumyDataItems = ({name, price, image}) => (
+  const NewDumyDataItems = ({ name, price, image }) => (
     <ScrollView>
       <View style={styles.serContainer}>
         <View style={styles.ImageBox}>
@@ -124,28 +154,112 @@ export default function Serach({navigation}) {
             <Text style={styles.price}>
               <Text style={styles.Doller}>$</Text> {price}
             </Text>
-            <Icon onPress={()=>Share()} name="share" style={styles.ShareIcon} />
+            <Icon name="share" style={styles.ShareIcon} />
           </View>
         </View>
       </View>
     </ScrollView>
   );
 
+  const onSearch = (text) => {
+    if (text == "") {
+      setApiData(mainapidata)
+    }
+    else {
+      let serList = mainapidata.filter(item => {
+        return item.name.toLowerCase().indexOf(text.toLowerCase()) > -1
+      });
+      setApiData(serList)
+    }
+  }
   return (
     <ScrollView>
-      <Text style={{color: 'black', fontSize: 50, marginLeft: 30}}>
+      <Text style={{ color: 'black', fontSize: 50, marginLeft: 30 }}>
         Our Product
       </Text>
-      <TextInput
-        placeholder="Search Your Product..."
-        placeholderTextColor="black"
-        style={styles.InputBox}></TextInput>
 
-      <FlatList
-        // horizontal
 
-        data={data}
-        renderItem={({item}) => (
+
+      <View
+        style={styles.InputBox}>
+        <Icon name="search" size={35} color="black" />
+        <TextInput
+          style={styles.SearchInput}
+          placeholder="Search Your Product.."
+          placeholderTextColor="black"
+        />
+        <Icon name="close" size={35} color="black" />
+
+      </View>
+
+      {
+        isLoading ?
+          <Skeleton>
+            <Skeleton>
+              <Skeleton.Item flexDirection="row" >
+                <Skeleton.Item alignItems="center" width={210} height={320}
+                  marginLeft={20}
+                  borderRadius={20} marginTop={20}
+                />
+                <Skeleton.Item alignItems="center" width={210} height={320}
+                  marginLeft={20}
+                  borderRadius={20} marginTop={20}
+                />
+              </Skeleton.Item>
+            </Skeleton>
+            <Skeleton>
+              <Skeleton.Item flexDirection="row" >
+                <Skeleton.Item alignItems="center" width={210} height={320}
+                  marginLeft={20}
+                  borderRadius={20} marginTop={20}
+                />
+                <Skeleton.Item alignItems="center" width={210} height={320}
+                  marginLeft={20}
+                  borderRadius={20} marginTop={20}
+                />
+              </Skeleton.Item>
+            </Skeleton>
+          </Skeleton>
+          // <ActivityIndicator /> 
+          : <FlatList
+            data={mainapidata}
+            numColumns={2}
+            renderItem={({ item }, index) => {
+              if (item) {
+                let price = parseFloat(item.price).toFixed(2);
+                return (
+                  <View style={styles.serContainer}>
+                    <View style={styles.ImageBox}>
+                      <Icon name="favorite-outline"
+                        onPress={() => AddtoFavroit(item)}
+                        style={styles.IconStyles} />
+                      <Image style={styles.Image} source={{ uri: item.images[0].original_image_url }} />
+                      <Text style={styles.Name}>{item.name}</Text>
+                      <View style={styles.PriceBox}>
+                        <Pressable>
+                          <Text style={styles.price}
+                            onPress={() =>
+                              navigation.navigate(
+                                `SingleProduct`,
+                                FetchSingleProducts(item),
+                              )
+                            }
+                          >
+                            <Text style={styles.Doller}>$</Text> {price}
+                          </Text>
+                        </Pressable>
+                        <Icon name="share" style={styles.ShareIcon} />
+                      </View>
+                    </View>
+                  </View>
+                )
+              }
+            }}
+          />
+      }
+      {/* <FlatList
+       data={data}
+        renderItem={({ item }) => (
           <NewDumyDataItems
             image={item.image}
             name={item.name}
@@ -154,105 +268,7 @@ export default function Serach({navigation}) {
         )}
         numColumns={2}
         keyExtractor={item => item.id}
-      />
+      /> */}
     </ScrollView>
   );
 }
-const styles = StyleSheet.create({
-  serContainer: {
-    // flex: 1,
-    // backgroundColor: '#003f5c',
-    width: '90%',
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'space-around',
-    marginLeft: 12,
-    marginBottom: 20,
-  },
-  InputBox: {
-    marginTop: 50,
-    color: 'black',
-    borderColor: 'black',
-    borderWidth: 1,
-    fontSize: 30,
-    justifyContent: 'flex-start',
-    padding: 20,
-    alignSelf: 'center',
-    borderRadius: 40,
-    width: '90%',
-    height: 70,
-    marginBottom: 20,
-    alignItems: 'center',
-    backgroundColor: 'white',
-  },
-
-  ImageBox: {
-    width: 210,
-    height: 300,
-    // borderWidth: 1,
-    borderColor: '#808080',
-    alignItems: 'flex-start',
-    borderRadius: 20,
-    marginTop: 40,
-    padding: 10,
-    backgroundColor: 'white',
-  },
-  Name: {
-    fontSize: 20,
-    color: 'black',
-    alignSelf: 'center',
-  },
-  IconStyles: {
-    color: 'orange',
-    // opacity: 0.3,
-    fontSize: 40,
-  },
-  Doller: {
-    color: '#808080',
-    fontSize: 22,
-  },
-  Image: {
-    width: '100%',
-    height: 150,
-    // flexDirection:"column",
-    alignSelf: 'center',
-    position: 'relative',
-    overflow: 'hidden',
-    resizeMode: 'contain',
-    backgroundColor: 'transparant',
-  },
-  PriceBox: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    width: '100%',
-  },
-  price: {
-    fontSize: 35,
-    color: 'black',
-    fontWeight: 'bold',
-  },
-  ShareIcon: {
-    color: '#808080',
-    opacity: 0.9,
-    fontSize: 30,
-  },
-
-  //   box: {
-  //   flex: 1,
-  //   alignItems: 'center',
-  //   justifyContent: 'center',
-  //   width: '70%',
-  //   height: 400,
-  //   borderColor: '#FFBF00',
-  //   borderRadius: 25,
-  // },
-  // NewAra: {
-  //   fontSize: 20,
-  //   fontFamily: 'Gill Sans',
-  // },
-  // Summ: {
-  //   fontSize: 30,
-  //   font,
-  // },
-});
